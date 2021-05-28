@@ -1,0 +1,79 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Managed Autopilot device identities\n---"
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AutopilotIdentity_CL\n| where EnrollmentState_s like \"enrolled\" or EnrollmentState_s like \"notContacted\"\n| summarize arg_max (TimeGenerated, *) by Id_g\n| summarize count() by EnrollmentState_s",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "barchart"
+      },
+      "name": "query - 2"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "# Managed Autopilot hardware models\r\n---"
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "AutopilotIdentity_CL\r\n| summarize arg_max (TimeGenerated, *) by Id_g\r\n| where isempty(Model_s) == false\r\n| summarize _Count = count() by Model_s\r\n| project Model = Model_s, Count = _Count",
+              "size": 1,
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "visualization": "piechart"
+            },
+            "customWidth": "50",
+            "name": "query - 4"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "AutopilotIdentity_CL\r\n| summarize arg_max (TimeGenerated, *) by Id_g\r\n| where isempty(Model_s) == false\r\n| summarize _Count = count() by Model_s\r\n| project Model = Model_s, Count = _Count\r\n| order by Count",
+              "size": 1,
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces"
+            },
+            "customWidth": "50",
+            "name": "query - 5"
+          }
+        ]
+      },
+      "name": "Hardware models"
+    }
+  ],
+  "fallbackResourceIds": [
+    "/subscriptions/<ENTER_YOUR_SUBSCRIPTION_ID>/resourceGroups/<ENTER_YOUR_RESOURCE_GROUP>/providers/Microsoft.OperationalInsights/workspaces/<ENTER_YOUR_WORKSPACE_NAME>"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
